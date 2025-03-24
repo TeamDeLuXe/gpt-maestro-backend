@@ -1,0 +1,77 @@
+openapi: 3.1.0
+info:
+  title: GPT Maestro – API Modulaire WordPress & Google Sheets
+  version: 1.0.0
+servers:
+  - url: https://api.example.com
+paths:
+  /wordpress/posts:
+    get:
+      summary: Récupérer les derniers articles WordPress
+      operationId: getWPPosts
+      parameters:
+        - name: site_url
+          in: query
+          required: true
+          description: URL de base du site WordPress (ex: https://monsite.com)
+          schema:
+            type: string
+        - name: per_page
+          in: query
+          required: false
+          description: Nombre d’articles à récupérer
+          schema:
+            type: integer
+            default: 5
+      responses:
+        '200':
+          description: Liste des articles récupérés
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  posts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                        link:
+                          type: string
+
+  /google/sheets/append:
+    post:
+      summary: Ajouter une ligne dans une feuille Google Sheets
+      operationId: pushToGoogleSheets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sheet_id:
+                  type: string
+                  description: ID du document Google Sheets
+                range:
+                  type: string
+                  description: Plage cible (ex: Sheet1!A1:D1)
+                values:
+                  type: array
+                  items:
+                    type: string
+                  description: Données à insérer (ligne unique)
+      responses:
+        '200':
+          description: Données insérées avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string

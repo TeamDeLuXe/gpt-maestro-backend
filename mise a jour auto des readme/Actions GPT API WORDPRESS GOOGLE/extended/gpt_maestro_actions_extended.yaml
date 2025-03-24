@@ -1,0 +1,114 @@
+openapi: 3.1.0
+info:
+  title: GPT Maestro WP Google
+  version: 1.0.0
+servers:
+- url: https://api.example.com
+paths:
+  /wp/posts:
+    get:
+      summary: get WP posts
+      operationId: getWPPosts
+      parameters:
+      - name: site_url
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: posts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  posts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                        link:
+                          type: string
+  /google/sheets/append:
+    post:
+      summary: append row in google sheets
+      operationId: pushToGoogleSheets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sheet_id:
+                  type: string
+                range:
+                  type: string
+                values:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: appended
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+  /scrape/pagesjaunes:
+    get:
+      summary: Scrape Pages Jaunes by keyword and city
+      operationId: scrapePagesJaunesByVille
+      parameters:
+      - name: keyword
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: city
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Scraped listings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+  /scrape/kompass:
+    get:
+      summary: Scrape Kompass category and sub-pages
+      operationId: scrapeKompassCategory
+      parameters:
+      - name: url
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Scraped companies from Kompass
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  companies:
+                    type: array
+                    items:
+                      type: object
